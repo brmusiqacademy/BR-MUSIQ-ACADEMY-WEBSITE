@@ -1,0 +1,584 @@
+/* Import Google Fonts for Poppins and Inter */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;700&display=swap');
+
+/* CSS Custom Properties (Variables) */
+:root {
+    --br-dark: #0f0f0f;
+    --br-accent: #C49E82; /* Warm rose gold */
+    --br-light: #ffffff;
+    --br-off-dark: #1f1f1f;
+}
+
+/* Global Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--br-dark);
+    color: var(--br-light);
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+    /* Adding a subtle noise texture for a premium feel */
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.03"/></svg>');
+    background-size: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Headings and Titles */
+.section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--br-light);
+    margin-bottom: 3rem;
+    text-shadow: 0 0 10px rgba(196, 158, 130, 0.3);
+}
+
+.card-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 9999px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, var(--br-accent), #e7c2a7);
+    color: var(--br-dark);
+    box-shadow: 0 0 0 rgba(196, 158, 130, 0);
+    animation: pulse 2s infinite cubic-bezier(0.66, 0.22, 0.44, 0.88);
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+    background: linear-gradient(45deg, #e7c2a7, var(--br-accent));
+    box-shadow: 0 0 25px rgba(196, 158, 130, 0.7);
+    animation: none;
+}
+
+.btn-secondary {
+    background: linear-gradient(45deg, var(--br-accent), #e7c2a7);
+    color: var(--br-dark);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    transform: scale(1.02);
+    background: linear-gradient(45deg, #e7c2a7, var(--br-accent));
+    box-shadow: 0 0 20px rgba(196, 158, 130, 0.5);
+}
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(15, 15, 15, 0.7);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--br-accent);
+    text-decoration: none;
+    text-shadow: 0 0 10px rgba(196, 158, 130, 0.5);
+}
+
+.nav-links ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: var(--br-light);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease, transform 0.3s ease;
+    position: relative;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--br-accent);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.hamburger-menu {
+    display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.hamburger-menu .bar {
+    width: 25px;
+    height: 3px;
+    background-color: var(--br-light);
+    transition: transform 0.3s ease;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--br-dark); /* Use dark color as a base */
+    text-align: center;
+    padding: 2rem;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(196, 158, 130, 0.1) 0%, rgba(196, 158, 130, 0) 70%);
+    z-index: 1;
+    animation: rotateGradient 20s infinite linear;
+}
+
+/* New Animated Background Element */
+.hero-section::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(196, 158, 130, 0.05) 10%, rgba(196, 158, 130, 0) 40%);
+    opacity: 0.5;
+    animation: zoomPan 15s infinite alternate;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    background-color: rgba(15, 15, 15, 0.5);
+    padding: 3rem;
+    border-radius: 1rem;
+    animation: fadeIn 1.5s ease-in-out forwards;
+}
+
+.hero-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--br-light);
+    margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(196, 158, 130, 0.8);
+    animation: glow 3s infinite alternate;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--br-light);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    animation: pulse 3s infinite cubic-bezier(0.66, 0.22, 0.44, 0.88);
+}
+
+/* Sections */
+main section {
+    padding: 5rem 0;
+}
+
+/* Courses Section */
+.courses-section {
+    background-color: var(--br-dark);
+}
+
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+}
+
+.course-card {
+    background-color: var(--br-off-dark);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    text-align: center;
+    border: 1px solid rgba(196, 158, 130, 0.2);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-card::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background: conic-gradient(transparent 0deg, rgba(196, 158, 130, 0.8) 45deg, transparent 90deg, transparent 100deg);
+    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    transform: rotate(0deg);
+}
+
+.course-card:hover::before {
+    transform: rotate(360deg);
+}
+
+.course-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 25px rgba(196, 158, 130, 0.5);
+}
+
+.course-card .icon {
+    font-size: 3rem;
+    color: var(--br-accent);
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.course-card:hover .icon {
+    transform: scale(1.1) rotateY(15deg);
+}
+
+.course-card .card-description {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Student Showcase Section */
+.showcase-section {
+    background-color: var(--br-off-dark);
+}
+
+.showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.showcase-card {
+    background-color: var(--br-dark);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid rgba(196, 158, 130, 0.2);
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+}
+
+.showcase-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 25px rgba(196, 158, 130, 0.5);
+}
+
+.showcase-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.showcase-card:hover .showcase-image {
+    transform: scale(1.1);
+}
+
+.play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 15, 15, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.showcase-card:hover .play-overlay {
+    opacity: 1;
+}
+
+.play-overlay .fa-play {
+    font-size: 3rem;
+    color: var(--br-accent);
+    border: 2px solid var(--br-accent);
+    border-radius: 50%;
+    padding: 1.5rem;
+    background-color: rgba(15, 15, 15, 0.8);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.play-overlay .fa-play:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(196, 158, 130, 0.5);
+}
+
+.showcase-card .card-title,
+.showcase-card .card-description {
+    padding: 1rem;
+}
+
+/* Contact Section */
+.contact-section {
+    background-color: var(--br-dark);
+}
+
+.contact-subtitle {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.contact-form {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: var(--br-off-dark);
+    padding: 2.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(196, 158, 130, 0.3);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    background-color: var(--br-dark);
+    border: 1px solid rgba(196, 158, 130, 0.5);
+    color: var(--br-light);
+    border-radius: 0.5rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--br-accent);
+    box-shadow: 0 0 10px rgba(196, 158, 130, 0.5);
+}
+
+.contact-form textarea {
+    resize: vertical;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--br-off-dark);
+    padding: 2rem 0;
+    text-align: center;
+    border-top: 1px solid rgba(196, 158, 130, 0.3);
+}
+
+.footer .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.footer-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--br-accent);
+}
+
+.footer-text {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.social-media {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.social-icon {
+    font-size: 1.5rem;
+    color: var(--br-light);
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-icon:hover {
+    color: var(--br-accent);
+    transform: scale(1.2);
+}
+
+.copyright {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 1rem;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    .hero-title {
+        font-size: 4rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.5rem;
+    }
+
+    .footer-content {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .footer .container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .copyright {
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 767px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        background-color: rgba(15, 15, 15, 0.95);
+        position: absolute;
+        top: 64px;
+        left: 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links ul {
+        flex-direction: column;
+        gap: 0;
+        padding: 1rem 0;
+    }
+
+    .nav-links li a {
+        display: block;
+        padding: 1rem;
+    }
+
+    .hamburger-menu {
+        display: flex;
+    }
+
+    .hamburger-menu.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger-menu.active .bar:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger-menu.active .bar:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px rgba(196, 158, 130, 0.6); }
+    to { text-shadow: 0 0 20px rgba(196, 158, 130, 1), 0 0 30px rgba(196, 158, 130, 0.8); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes rotateGradient {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes zoomPan {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    100% { transform: translate(-50%, -45%) scale(1.05); }
+}

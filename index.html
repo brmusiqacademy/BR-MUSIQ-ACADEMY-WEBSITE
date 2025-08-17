@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BR MUSIQ ACADEMY</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Firebase SDK Scripts -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // IMPORTANT: Your specific Firebase configuration
+        const appId = "1:770059993606:web:385eb1072433530f3a7987";
+        const firebaseConfig = {
+          apiKey: "AIzaSyCljcJK8dglaMAm1I4nCM0nhscsfDRSUHg",
+          authDomain: "br-musiq-website-enquiry.firebaseapp.com",
+          projectId: "br-musiq-website-enquiry",
+          storageBucket: "br-musiq-website-enquiry.firebasestorage.app",
+          messagingSenderId: "770059993606",
+          appId: "1:770059993606:web:385eb1072433530f3a7987",
+          measurementId: "G-YWRBDWE9PX"
+        };
+        
+        // Initialize Firebase services
+        const app = Object.keys(firebaseConfig).length > 0 ? initializeApp(firebaseConfig) : null;
+        const db = app ? getFirestore(app) : null;
+        const auth = app ? getAuth(app) : null;
+
+        // Ensure the code runs after the page has fully loaded
+        window.onload = async function() {
+            // Check if Firebase services and the contact form exist
+            const contactForm = document.getElementById('contact-form');
+            const formStatus = document.getElementById('form-status');
+
+            if (!contactForm || !db || !auth) {
+                console.error("Initialization failed: Missing form, database, or authentication service.");
+                if (formStatus) {
+                    formStatus.textContent = "Error: Form submission is not available.";
+                    formStatus.style.color = '#FF4500';
+                }
+                return;
+            }
+
+            // Sign in the user anonymously
+            try {
+                await signInAnonymously(auth);
+                console.log('Firebase authenticated successfully.');
+            } catch (error) {
+                console.error('Firebase authentication error:', error);
+                if (formStatus) {
+                    if (error.code === 'auth/configuration-not-found') {
+                        formStatus.textContent = 'Auth error: Please check your Firebase project settings.';
+                        formStatus.style.color = '#FF4500';
+                        console.error('ACTION REQUIRED: The "auth/configuration-not-found" error indicates that the Firebase Authentication service is not properly configured for this project. Please go to your Firebase Console, navigate to the "Authentication" section under "Build," and ensure that at least one sign-in method (like "Anonymous") is enabled.');
+                    } else {
+                        formStatus.textContent = 'Auth error: ' + error.message;
+                        formStatus.style.color = '#FF4500';
+                    }
+                }
+            }
+
+            // Handle form submission
+            contactForm.addEventListener('submit', async (e) => {
+                e.preventDefault(); // This line is crucial and prevents the page from refreshing.
+
+                const name = contactForm.querySelector('input[name="name"]').value;
+                const email = contactForm.querySelector('input[name="email"]').value;
+                const message = contactForm.querySelector('textarea[name="message"]').value;
+
+                formStatus.textContent = 'Sending message...';
+                formStatus.style.color = '#C49E82';
+
+                const userId = auth.currentUser ? auth.currentUser.uid : null;
+
+                if (!userId) {
+                    console.error("User not authenticated. Cannot send message.");
+                    formStatus.textContent = 'Failed to send message: Authentication failed. Please check console.';
+                    formStatus.style.color = '#FF4500';
+                    return;
+                }
+
+                try {
+                    const messagesCollectionRef = collection(db, `artifacts/${appId}/users/${userId}/messages`);
+
+                    await addDoc(messagesCollectionRef, {
+                        name: name,
+                        email: email,
+                        message: message,
+                        timestamp: new Date()
+                    });
+
+                    formStatus.textContent = 'Message sent successfully!';
+                    formStatus.style.color = '#7CFC00';
+                    contactForm.reset();
+                } catch (error) {
+                    console.error("Error sending message:", error);
+                    formStatus.textContent = 'Failed to send message. Please try again.';
+                    formStatus.style.color = '#FF4500';
+                }
+            });
+        };
+    </script>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="container">
+            <a href="#" class="logo">BR MUSIQ</a>
+            <nav class="nav-links" id="nav-links">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#why-choose">Why Us?</a></li>
+                    <li><a href="#courses">Courses</a></li>
+                    <li><a href="#showcase">Showcase</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="hamburger-menu" id="hamburger-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">RANIPET'S #1 MUSIC ACADEMY</h1>
+                <p class="hero-subtitle">Voted Top 1 on Justdial and other platforms. Join the best to become the best.</p>
+                <a href="#contact" class="btn btn-primary">Enroll Now</a>
+            </div>
+        </section>
+
+        <!-- Why Choose Us Section -->
+        <section id="why-choose" class="courses-section">
+            <div class="container">
+                <h2 class="section-title">Why Choose BR MUSIQ?</h2>
+                <div class="course-grid">
+                    <div class="course-card">
+                        <div class="icon"><i class="fas fa-award"></i></div>
+                        <h3 class="card-title">Top-Rated Excellence</h3>
+                        <p class="card-description">We are the most highly-rated music academy in the Ranipet district, trusted by thousands of students and parents.</p>
+                    </div>
+                    <div class="course-card">
+                        <div class="icon"><i class="fas fa-user-tie"></i></div>
+                        <h3 class="card-title">Expert Instructors</h3>
+                        <p class="card-description">Learn from seasoned professionals with years of experience who are passionate about teaching and mentoring.</p>
+                    </div>
+                    <div class="course-card">
+                        <div class="icon"><i class="fas fa-star"></i></div>
+                        <h3 class="card-title">Student Success Stories</h3>
+                        <p class="card-description">Our students consistently excel in exams and competitions, showcasing the effectiveness of our personalized curriculum.</p>
+                    </div>
+                    <div class="course-card">
+                        <div class="icon"><i class="fas fa-users"></i></div>
+                        <h3 class="card-title">All Ages & Levels</h3>
+                        <p class="card-description">Whether you are a child or an adult, a beginner or advanced, our doors are open to help you achieve your musical dreams.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Courses Section -->
+        <section id="courses" class="courses-section">
+            <div class="container">
+                <h2 class="section-title">Our Courses</h2>
+                <div class="course-grid">
+                    <div class="course-card">
+                        <div class="icon"><i class="fas fa-keyboard"></i></div>
+                        <h3 class="card-title">Keyboard</h3>
+                        <p class="card-description">Learn to play the piano with our expert instructors, from classical to contemporary.</p>
+                    </div>
+                    <div class="course-card">
+                        <div class="icon"><i class="fas fa-guitar"></i></div>
+                        <h3 class="card-title">Guitar</h3>
+                        <p class="card-description">Master chords, scales, and solos on acoustic or electric guitar.</p>
+                    </div>
+                    <div class="course-card">
+                        <div class="icon"><i class="fas fa-microphone"></i></div>
+                        <h3 class="card-title">Vocals</h3>
+                        <p class="card-description">Discover your voice and perfect your singing technique with personalized coaching.</p>
+                    </div>
+                    <div class="course-card">
+                        <div class="icon"><i class="fas fa-headphones"></i></div>
+                        <h3 class="card-title">Music Production</h3>
+                        <p class="card-description">Dive into the world of digital audio and create your own beats and songs.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Student Showcase Section -->
+        <section id="showcase" class="showcase-section">
+            <div class="container">
+                <h2 class="section-title">Student Showcase</h2>
+                <div class="showcase-grid">
+                    <div class="showcase-card">
+                        <img src="https://placehold.co/600x400/1f1f1f/C49E82?text=Piano+Performance" alt="Piano Performance" class="showcase-image">
+                        <div class="play-overlay">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <h3 class="card-title">Moonlight Sonata</h3>
+                        <p class="card-description">A beautiful rendition of Beethoven by our advanced piano student.</p>
+                    </div>
+                    <div class="showcase-card">
+                        <img src="https://placehold.co/600x400/1f1f1f/C49E82?text=Guitar+Solo" alt="Guitar Solo" class="showcase-image">
+                        <div class="play-overlay">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <h3 class="card-title">Live Guitar Solo</h3>
+                        <p class="card-description">Our student rockstar tearing up the stage with a fiery solo.</p>
+                    </div>
+                    <div class="course-card">
+                        <img src="https://placehold.co/600x400/1f1f1f/C49E82?text=Vocal+Recital" alt="Vocal Recital" class="showcase-image">
+                        <div class="play-overlay">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <h3 class="card-title">Vocal Ensemble Highlight</h3>
+                        <p class="card-description">A stunning performance from our vocal students during the annual recital.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="contact-subtitle">Ready to join the best? Fill out the form below and start your journey with us today!</p>
+                <form class="contact-form" id="contact-form">
+                    <input type="text" name="name" placeholder="Name" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <textarea name="message" rows="5" placeholder="Message" required></textarea>
+                    <button type="submit" class="btn btn-secondary">Send Message</button>
+                    <p id="form-status" style="margin-top: 1rem; text-align: center; font-weight: 500;"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h4 class="footer-title">BR MUSIQ ACADEMY</h4>
+                    <p class="footer-text">Email: info@brmusiq.com</p>
+                    <p class="footer-text">Phone: +1 (123) 456-7890</p>
+                </div>
+                <div class="social-media">
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+            <p class="copyright">&copy; 2024 BR MUSIQ ACADEMY. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu -->
+    <script>
+        document.getElementById('hamburger-menu').addEventListener('click', function() {
+            document.getElementById('nav-links').classList.toggle('active');
+            this.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
